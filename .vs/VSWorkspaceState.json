@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\EmbeddedProject3",
+    "\\EmbeddedProject3\\EmbeddedProject3",
+    "\\EmbeddedProject3\\EmbeddedProject3\\main"
   ],
+  "SelectedNode": "\\EmbeddedProject3\\EmbeddedProject3\\EmbeddedProject3.vgdbproj.Chesi.user",
   "PreviewInSolutionExplorer": false
 }

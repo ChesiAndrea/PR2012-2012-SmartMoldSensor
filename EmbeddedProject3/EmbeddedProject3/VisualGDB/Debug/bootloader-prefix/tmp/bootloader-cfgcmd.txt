@@ -1,0 +1,1 @@
+cmd='C:/Users/Chesi/AppData/Local/VisualGDB/CMake/bin/cmake.exe;-DSDKCONFIG=C:/Users/Chesi/source/repos/PR2012-2012-SmartMoldSensor/EmbeddedProject3/EmbeddedProject3/sdkconfig;-DIDF_PATH=c:/SysGCC/esp32/esp-idf/v3.2;-GNinja;<SOURCE_DIR><SOURCE_SUBDIR>'
