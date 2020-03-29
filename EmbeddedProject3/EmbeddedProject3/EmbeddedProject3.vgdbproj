@@ -241,6 +241,8 @@
     </AdditionalGDBSettings>
     <DebugMethod>
       <ID>openocd</ID>
+      <InterfaceID>jlink</InterfaceID>
+      <InterfaceSerialNumber>000261003080</InterfaceSerialNumber>
       <Configuration xsi:type="com.visualgdb.edp.openocd.settings.esp32">
         <CommandLine>-f interface/jlink.cfg -c "adapter_khz 3000" -f target/esp32.cfg</CommandLine>
         <ExtraParameters>

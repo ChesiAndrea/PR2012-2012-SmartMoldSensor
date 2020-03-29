@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "IRremote/IRremote.h"
-#include "IRremote/IRremoteInt.h"
-#include "IRremote/boarddefs.h"
+#include "IRremote/RMTLib.h"
 //********************************************
 // DHT define and instance 
 //********************************************
@@ -57,23 +55,17 @@ void DigitalInput::Clk(void)
  */
 
 
-int RECV_PIN = 14;
-IRrecv irrecv(RECV_PIN);
-decode_results results;
+RMTLib RMTLib;
 
 void IR_Init(void)
 {
-//	irrecv.enableIRIn();
+	
 }
 
 uint64_t ir_Read;
 void IR_Clk(void)
 {
-//	if (irrecv.decode(&results)) 
-//	{
-//		ir_Read = results.value;
-//		irrecv.resume();  // Receive the next value
-//	}
+	RMTLib.Clk();
 	
 }
 

@@ -21,7 +21,7 @@
 //------------------------------------------------------------------------------
 // The ISR header contains several useful macros the user may wish to use
 //
-#include "IRremote/IRremoteInt.h"
+#include "IRremoteInt.h"
 
 //------------------------------------------------------------------------------
 // Supported IR protocols
