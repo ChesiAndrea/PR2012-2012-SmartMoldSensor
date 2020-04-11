@@ -23,29 +23,11 @@ extern "C" {
 
 
 
-#ifdef SEND_NEC
-void rmtlib_nec_send(unsigned long data);
-#endif
-
 #ifdef RECEIVE_NEC
-int rmtlib_nec_receive();
+extern	void nec_rx_init();
+uint32_t* rmtlib_nec_receive();
 #endif
 
-#ifdef SEND_SAMSUNG
-void rmtlib_samsung_send(unsigned long data);
-#endif
-
-#ifdef RECEIVE_SAMSUNG
-void rmtlib_samsung_receive();
-#endif
-
-#ifdef SEND_RC5
-void rmtlib_rc5_send(unsigned long data);
-#endif
-
-#ifdef RECEIVE_RC5
-void rmtlib_rc5_receive();
-#endif
 
 #ifdef __cplusplus
 } // extern C

@@ -148,7 +148,9 @@ static int nec_parse_items(rmt_item32_t* item, int item_num, uint32_t* cmd_data)
     return i;
 }
 
-static void nec_rx_init()
+RingbufHandle_t rb = NULL;
+
+void nec_rx_init()
 {
 	// idle_treshhold: In receive mode, when no edge is detected on the input signal for longer
 	// than idle_thres channel clock cycles, the receive process is finished.
@@ -164,23 +166,21 @@ static void nec_rx_init()
     rmt_rx.rx_config.idle_threshold = rmt_item32_TIMEOUT_US / 10 * (RMT_TICK_10_US);
 
     rmt_config(&rmt_rx);
-    rmt_driver_install(rmt_rx.channel, 2000, 0);
+	rmt_driver_install(rmt_rx.channel, 2000, 0);
 }
 
-int rmtlib_nec_receive()
-{
-	vTaskDelay(10);
-	nec_rx_init();
-
-    //get RMT RX ringbuffer
-    RingbufHandle_t rb = NULL;
-    rmt_get_ringbuf_handle(RMT_RX_CHANNEL, &rb);
+uint32_t* rmtlib_nec_receive()
+{	
+	//get RMT RX ringbuffer
+	rmt_get_ringbuf_handle(RMT_RX_CHANNEL, &rb);
 
 	// rmt_rx_start(channel, rx_idx_rst) - Set true to reset memory index for receiver
     rmt_rx_start(RMT_RX_CHANNEL, 1);
-
-	int res = 0;
-		
+	
+	uint8_t Ptr = 0;
+	uint32_t* Ir_Data_Received = NULL;
+	Ir_Data_Received = pvPortMalloc(16);	
+	for (uint8_t i = 0; i < 4; i++) Ir_Data_Received[i]=0;
     while(rb) 
     {
         size_t rx_size = 0;
@@ -188,19 +188,72 @@ int rmtlib_nec_receive()
         if(item) 
         {
         	rmt_dump_items(item, rx_size / 4);
-
-            uint32_t rmt_data;
-            res = nec_parse_items(item, rx_size / 4, &rmt_data);
+            uint32_t rmt_data;            
+	        if (nec_parse_items(item, rx_size / 4, &rmt_data) == 34)
+	        {
+		        Ir_Data_Received[Ptr] =  rmt_data;
+		        Ptr++;
+	        }
             vRingbufferReturnItem(rb, (void*) item);
-	        remote_code = rmt_data;
-        } 
+	        if (Ptr == 4) break;
+        } 	    
 	    else 
         {
 	        break;
         }
     }
-    rmt_driver_uninstall(RMT_RX_CHANNEL);
-	return res;
+	return Ir_Data_Received;
 }
+
+
+
+
+
+//int rmtlib_nec_receive()
+//{
+//	vTaskDelay(10);
+//	nec_rx_init();
+//
+//	//get RMT RX ringbuffer
+//	RingbufHandle_t rb = NULL;
+//	rmt_get_ringbuf_handle(RMT_RX_CHANNEL, &rb);
+//
+//	// rmt_rx_start(channel, rx_idx_rst) - Set true to reset memory index for receiver
+//    rmt_rx_start(RMT_RX_CHANNEL, 1);
+//
+//	int res = 0;
+//		
+//	while (rb) 
+//	{
+//		size_t rx_size = 0;
+//		rmt_item32_t* item = (rmt_item32_t*) xRingbufferReceive(rb, &rx_size, 1);
+//		if (item) 
+//		{
+//			rmt_dump_items(item, rx_size / 4);
+//
+//			uint32_t rmt_data;
+//			res = nec_parse_items(item, rx_size / 4, &rmt_data);
+//			vRingbufferReturnItem(rb, (void*) item);
+//			remote_code = rmt_data;
+//		} 
+//		else 
+//		{
+//			break;
+//		}
+//	}
+//	rmt_driver_uninstall(RMT_RX_CHANNEL);
+//	return res;
+//}
+
+
+
+
+
+
+
+
+
+
+
 
 #endif

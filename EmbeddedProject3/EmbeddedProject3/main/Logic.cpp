@@ -109,7 +109,6 @@ void LogicClk(void)
 			humidity_node = Node_Run;
 		}
 		//------------ ALL Out off-------------------
-		LedStateGreen.SetState(false);
 		Buzzer.SetState(false);
 		LedStateRed.SetState(false);	
 		//--------------------------------------------
@@ -140,7 +139,6 @@ void LogicClk(void)
 		}
 		
 		//------------ Led green toggle --------------
-		LedStateGreen.Toggle();
 		Buzzer.SetState(false);
 		LedStateRed.SetState(false);	
 		//--------------------------------------------		
@@ -164,7 +162,6 @@ void LogicClk(void)
 			Humidity_Integral(Humidity, Humidity_Allowed, Time_of_one_cycle);
 		}
 		//------------  Led red toggle  --------------
-		LedStateGreen.SetState(false);
 		Buzzer.SetState(false);
 		LedStateRed.Toggle();	
 		//--------------------------------------------	
@@ -174,9 +171,8 @@ void LogicClk(void)
 //****************************        Alarm          ***************************
 //******************************************************************************
 	case Node_Alarm:
-		Buzzer.SetState(true);				// Buzzer != Buzzer;
+		Buzzer.SetState(true);			// Buzzer != Buzzer;
 		LedStateRed.Toggle();			// led_red != led_red;
-		LedStateGreen.SetState(false);	// led_green = 0;
 		// Send the alarm message to the server
 		// wait stop from the server or ir
 		if((UserSwitch.GetState() == 0) || Exit_From_Alarm_Remote)

@@ -59,14 +59,13 @@ RMTLib RMTLib;
 
 void IR_Init(void)
 {
-	
+	RMTLib.Init();
 }
 
 uint64_t ir_Read;
 void IR_Clk(void)
 {
-	RMTLib.Clk();
-	
+	RMTLib.Clk();	
 }
 
 
