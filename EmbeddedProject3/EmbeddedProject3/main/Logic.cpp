@@ -2,6 +2,7 @@
 #include "Bsp.h"
 #include "Input.h"
 #include <FreeRTOS.h>
+#include "IRremote/RMTLib.h"
 //ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 //------------------ Queue --------------------------------
 //------------ LOGIC ====> Network ------------------------
@@ -32,7 +33,7 @@ volatile _humidity_node humidity_node = Node_Boot;
 uint32_t Wait_PreAlarm = 0;   // mS
 float Humidity_Int = 0;
 bool UserSw = false;
-
+extern RMTLib RemoteControl;
 
 // Logic function 
 
@@ -76,9 +77,11 @@ void LogicClk(void)
                      ULONG_MAX,				 /* Reset the notification value to 0 on exit. */
                      &ulNotifiedValue,		 /* Notified value pass out in ulNotifiedValue. */
                      0);		             /* Block 0 tick. */
-	if ((ulNotifiedValue & 0x01) != 0)
+	if ((ulNotifiedValue & 0x03) != 0)
 	{
-		/* Bit 0 was set - process whichever event is represented by bit 0. */
+		
+		//BIT 1 = Network button
+		//BIT 1 = Ir
 		Exit_From_Alarm_Remote = true;
 	}
 	
@@ -91,6 +94,11 @@ void LogicClk(void)
 	xQueueSend(HumidityMessage,    &Humidity,    (TickType_t) 0);
 	xQueueSend(TemperatureMessage, &Temperature, (TickType_t) 0);
 	xQueueSend(AlarmMessage,       &Alarm,       (TickType_t) 0);
+	
+	if (UserSwitch.GetState() == 0)
+	{
+		RemoteControl.Save();
+	}
 	
 	switch (humidity_node) 
 	{
@@ -175,7 +183,7 @@ void LogicClk(void)
 		LedStateRed.Toggle();			// led_red != led_red;
 		// Send the alarm message to the server
 		// wait stop from the server or ir
-		if((UserSwitch.GetState() == 0) || Exit_From_Alarm_Remote)
+		if( Exit_From_Alarm_Remote)
 		{
 			humidity_node = Node_Run ;
 			Wait_PreAlarm = (Return_PreAlarm * 60 * 1000);

@@ -31,6 +31,7 @@ class RMTLib
 		gpio_num_t rx_pin;
 		void Init();
 		void Clk();
+		void Save();
 	private:
 		bool save = false;
 		bool remove_alarm = false;

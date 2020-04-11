@@ -25,7 +25,7 @@ extern "C" {
 
 #ifdef RECEIVE_NEC
 extern	void nec_rx_init();
-uint32_t* rmtlib_nec_receive();
+uint32_t rmtlib_nec_receive();
 #endif
 
 

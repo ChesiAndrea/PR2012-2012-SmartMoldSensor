@@ -44,28 +44,17 @@ void DigitalInput::Clk(void)
 //********************************************
 
 
-
-
-/*
- * EEProm : the first 40 byte are reserved for remote control and Alarm Password
- * EEProm from 0  to 7  (first  Password character (4 byte == uint_64t))
- * EEProm from 8  to 15 (second Password character (4 byte == uint_64t))
- * EEProm from 16 to 23 (third  Password character (4 byte == uint_64t))
- * EEProm from 24 to 31 (fourth Password character (4 byte == uint_64t))
- */
-
-
-RMTLib RMTLib;
+RMTLib RemoteControl;
 
 void IR_Init(void)
 {
-	RMTLib.Init();
+	RemoteControl.Init();
 }
 
 uint64_t ir_Read;
 void IR_Clk(void)
 {
-	RMTLib.Clk();	
+	RemoteControl.Clk();	
 }
 
 

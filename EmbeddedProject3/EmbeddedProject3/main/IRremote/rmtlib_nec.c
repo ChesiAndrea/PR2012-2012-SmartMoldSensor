@@ -148,7 +148,7 @@ static int nec_parse_items(rmt_item32_t* item, int item_num, uint32_t* cmd_data)
     return i;
 }
 
-RingbufHandle_t rb = NULL;
+//RingbufHandle_t rb = NULL;
 
 void nec_rx_init()
 {
@@ -169,84 +169,47 @@ void nec_rx_init()
 	rmt_driver_install(rmt_rx.channel, 2000, 0);
 }
 
-uint32_t* rmtlib_nec_receive()
-{	
+uint32_t rmtlib_nec_receive()
+{
+	vTaskDelay(10);
+	nec_rx_init();
+
 	//get RMT RX ringbuffer
+	RingbufHandle_t rb = NULL;
 	rmt_get_ringbuf_handle(RMT_RX_CHANNEL, &rb);
 
 	// rmt_rx_start(channel, rx_idx_rst) - Set true to reset memory index for receiver
     rmt_rx_start(RMT_RX_CHANNEL, 1);
-	
-	uint8_t Ptr = 0;
-	uint32_t* Ir_Data_Received = NULL;
-	Ir_Data_Received = pvPortMalloc(16);	
-	for (uint8_t i = 0; i < 4; i++) Ir_Data_Received[i]=0;
-    while(rb) 
-    {
-        size_t rx_size = 0;
-        rmt_item32_t* item = (rmt_item32_t*) xRingbufferReceive(rb, &rx_size, 1);
-        if(item) 
-        {
-        	rmt_dump_items(item, rx_size / 4);
-            uint32_t rmt_data;            
-	        if (nec_parse_items(item, rx_size / 4, &rmt_data) == 34)
-	        {
-		        Ir_Data_Received[Ptr] =  rmt_data;
-		        Ptr++;
-	        }
-            vRingbufferReturnItem(rb, (void*) item);
-	        if (Ptr == 4) break;
-        } 	    
-	    else 
-        {
-	        break;
-        }
-    }
-	return Ir_Data_Received;
+		
+	while (rb) 
+	{
+		size_t rx_size = 0;
+		rmt_item32_t* item = (rmt_item32_t*) xRingbufferReceive(rb, &rx_size, 1);
+		if (item) 
+		{
+			rmt_dump_items(item, rx_size / 4);
+			uint32_t rmt_data;
+			uint32_t res;
+			res = nec_parse_items(item, rx_size / 4, &rmt_data);
+			vRingbufferReturnItem(rb, (void*) item);
+			if (res == 34) 
+			{
+				remote_code = rmt_data;
+				break;
+			}
+			else
+			{
+				remote_code = 0;
+			}
+		} 
+		else 
+		{
+			remote_code = 0;
+		}
+	}
+	rmt_driver_uninstall(RMT_RX_CHANNEL);
+	return remote_code;
 }
-
-
-
-
-
-//int rmtlib_nec_receive()
-//{
-//	vTaskDelay(10);
-//	nec_rx_init();
-//
-//	//get RMT RX ringbuffer
-//	RingbufHandle_t rb = NULL;
-//	rmt_get_ringbuf_handle(RMT_RX_CHANNEL, &rb);
-//
-//	// rmt_rx_start(channel, rx_idx_rst) - Set true to reset memory index for receiver
-//    rmt_rx_start(RMT_RX_CHANNEL, 1);
-//
-//	int res = 0;
-//		
-//	while (rb) 
-//	{
-//		size_t rx_size = 0;
-//		rmt_item32_t* item = (rmt_item32_t*) xRingbufferReceive(rb, &rx_size, 1);
-//		if (item) 
-//		{
-//			rmt_dump_items(item, rx_size / 4);
-//
-//			uint32_t rmt_data;
-//			res = nec_parse_items(item, rx_size / 4, &rmt_data);
-//			vRingbufferReturnItem(rb, (void*) item);
-//			remote_code = rmt_data;
-//		} 
-//		else 
-//		{
-//			break;
-//		}
-//	}
-//	rmt_driver_uninstall(RMT_RX_CHANNEL);
-//	return res;
-//}
-
-
-
 
 
 
