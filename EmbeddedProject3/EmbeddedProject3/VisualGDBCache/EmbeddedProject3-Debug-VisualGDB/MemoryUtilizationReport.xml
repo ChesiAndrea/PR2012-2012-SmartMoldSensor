@@ -3,12 +3,12 @@
   <Memories>
     <MemoryUtilization>
       <MemoryName>DATA_FLASH</MemoryName>
-      <Used>221044</Used>
+      <Used>221048</Used>
       <Total>8388608</Total>
     </MemoryUtilization>
     <MemoryUtilization>
       <MemoryName>INSTR_FLASH</MemoryName>
-      <Used>638102</Used>
+      <Used>638194</Used>
       <Total>3342336</Total>
     </MemoryUtilization>
     <MemoryUtilization>
@@ -18,7 +18,7 @@
     </MemoryUtilization>
     <MemoryUtilization>
       <MemoryName>DATA_RAM</MemoryName>
-      <Used>84712</Used>
+      <Used>84728</Used>
       <Total>327680</Total>
     </MemoryUtilization>
   </Memories>

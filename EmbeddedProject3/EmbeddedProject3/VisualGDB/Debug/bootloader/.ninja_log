@@ -42,3 +42,5 @@
 1218	1442	608309519	bootloader_support/libbootloader_support.a	ac17c8c3b6f4c33b
 1442	1717	608309520	bootloader.elf	99bbb08a967feb29
 1717	2009	608309520	bootloader.bin	e0b9c9004c38a5a8
+6	223	609011938	bootloader.elf	99bbb08a967feb29
+223	441	609011938	bootloader.bin	e0b9c9004c38a5a8
