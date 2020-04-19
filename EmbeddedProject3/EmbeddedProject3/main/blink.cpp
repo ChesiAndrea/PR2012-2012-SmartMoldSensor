@@ -36,7 +36,7 @@ void bsp_task(void *pvParameter)
 	while (1)
 	{
 		BspClk();
-		vTaskDelay(200 / portTICK_PERIOD_MS);
+		vTaskDelay(100 / portTICK_PERIOD_MS);
 	}
 }
 
@@ -66,6 +66,6 @@ void setup()
 	volatile int a;
 void loop()
 {
-
+	vTaskDelay(1000 / portTICK_PERIOD_MS);
 }
 

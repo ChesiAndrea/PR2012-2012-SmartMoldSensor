@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "IRremote/IRremote.h"
-#include "IRremote/IRremoteInt.h"
-#include "IRremote/boarddefs.h"
+#include "IRremote/RMTLib.h"
 //********************************************
 // DHT define and instance 
 //********************************************
@@ -46,35 +44,17 @@ void DigitalInput::Clk(void)
 //********************************************
 
 
-
-
-/*
- * EEProm : the first 40 byte are reserved for remote control and Alarm Password
- * EEProm from 0  to 7  (first  Password character (4 byte == uint_64t))
- * EEProm from 8  to 15 (second Password character (4 byte == uint_64t))
- * EEProm from 16 to 23 (third  Password character (4 byte == uint_64t))
- * EEProm from 24 to 31 (fourth Password character (4 byte == uint_64t))
- */
-
-
-int RECV_PIN = 14;
-IRrecv irrecv(RECV_PIN);
-decode_results results;
+RMTLib RemoteControl;
 
 void IR_Init(void)
 {
-//	irrecv.enableIRIn();
+	RemoteControl.Init();
 }
 
 uint64_t ir_Read;
 void IR_Clk(void)
 {
-//	if (irrecv.decode(&results)) 
-//	{
-//		ir_Read = results.value;
-//		irrecv.resume();  // Receive the next value
-//	}
-	
+	RemoteControl.Clk();	
 }
 
 

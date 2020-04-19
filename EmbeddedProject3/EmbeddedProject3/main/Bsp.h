@@ -7,8 +7,8 @@
 
 #define LedRedPin (int)32
 #define LedGreenPin (int)33
-#define LedDbgRedPin (int)19
-#define LedDbgGreenPin (int)5
+#define LedDbgRedPin (int)5
+#define LedDbgGreenPin (int)19
 #define BuzzerPin (int)2
 #define SwitchUserPin (int)21// LED
 extern Output LedStateRed;
